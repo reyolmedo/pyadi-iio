@@ -1,0 +1,145 @@
+# Copyright (C) 2026 Analog Devices, Inc.
+#
+# SPDX short identifier: ADIBSD
+
+import numpy as np
+
+from adi.attribute import attribute
+from adi.device_base import rx_chan_comp
+
+
+class ad5933(rx_chan_comp):
+    """AD5933 1 MSPS, 12-bit impedance converter, network analyzer."""
+
+    compatible_parts = ["ad5933"]
+    _complex_data = False
+    _control_device_name = "ad5933"
+    _rx_data_device_name = "ad5933"
+    _channel_def = None
+    _device_name = "ad5933"
+    _rx_channel_names = ["voltage0", "voltage1", "temp"]
+    _rx_data_type = np.int16
+    _rx_unbuffered_data = False
+    _rx_data_si_type = float
+
+    def __init__(self, uri="", **kwargs):
+        """ad5933 class constructor."""
+        rx_chan_comp.__init__(self, uri=uri, **kwargs)
+
+        self.real = self._channel(self._ctrl, "voltage0")
+        self.imaginary = self._channel(self._ctrl, "voltage1")
+        self.temp = self._temp_channel(self._ctrl, "temp")
+
+    def reg_read(self, addr):
+        """Read IIO device register."""
+        return self._ctrl.reg_read(addr)
+
+    def reg_write(self, addr, value):
+        """Write IIO device register."""
+        self._ctrl.reg_write(addr, value)
+
+    @property
+    def pga_gain(self):
+        """AD5933 PGA gain (0 = x5, 1 = x1)."""
+        return self._get_iio_dev_attr("pga_gain", self._ctrl)
+
+    @pga_gain.setter
+    def pga_gain(self, value):
+        self._set_iio_dev_attr("pga_gain", value, self._ctrl)
+
+    @property
+    def output_range(self):
+        """AD5933 output excitation range.
+
+        0 = 2000 mVpp, 1 = 200 mVpp, 2 = 400 mVpp, 3 = 1000 mVpp.
+        """
+        return self._get_iio_dev_attr("output_range", self._ctrl)
+
+    @output_range.setter
+    def output_range(self, value):
+        self._set_iio_dev_attr("output_range", value, self._ctrl)
+
+    @property
+    def start_frequency(self):
+        """AD5933 sweep start frequency in Hz."""
+        return self._get_iio_dev_attr("start_frequency", self._ctrl)
+
+    @start_frequency.setter
+    def start_frequency(self, value):
+        self._set_iio_dev_attr("start_frequency", value, self._ctrl)
+
+    @property
+    def frequency_increment(self):
+        """AD5933 frequency increment per sweep point in Hz."""
+        return self._get_iio_dev_attr("frequency_increment", self._ctrl)
+
+    @frequency_increment.setter
+    def frequency_increment(self, value):
+        self._set_iio_dev_attr("frequency_increment", value, self._ctrl)
+
+    @property
+    def frequency_points(self):
+        """AD5933 number of frequency points in the sweep."""
+        return self._get_iio_dev_attr("frequency_points", self._ctrl)
+
+    @frequency_points.setter
+    def frequency_points(self, value):
+        self._set_iio_dev_attr("frequency_points", value, self._ctrl)
+
+    @property
+    def settling_cycles(self):
+        """AD5933 number of settling cycles (0-511)."""
+        return self._get_iio_dev_attr("settling_cycles", self._ctrl)
+
+    @settling_cycles.setter
+    def settling_cycles(self, value):
+        self._set_iio_dev_attr("settling_cycles", value, self._ctrl)
+
+    @property
+    def settling_multiplier(self):
+        """AD5933 settling cycles multiplier (0 = x1, 1 = x2, 3 = x4)."""
+        return self._get_iio_dev_attr("settling_multiplier", self._ctrl)
+
+    @settling_multiplier.setter
+    def settling_multiplier(self, value):
+        self._set_iio_dev_attr("settling_multiplier", value, self._ctrl)
+
+    @property
+    def sweep_start(self):
+        """AD5933 sweep trigger. Write 1 to start a sweep; reading reports the
+        current sweep point index."""
+        return self._get_iio_dev_attr("sweep_start", self._ctrl)
+
+    @sweep_start.setter
+    def sweep_start(self, value):
+        self._set_iio_dev_attr("sweep_start", value, self._ctrl)
+
+    @property
+    def sweep_done(self):
+        """AD5933 sweep completion status (read-only)."""
+        return self._get_iio_dev_attr("sweep_done", self._ctrl)
+
+    class _channel(attribute):
+        """AD5933 raw channel (real / imaginary)."""
+
+        def __init__(self, ctrl, channel_name):
+            self.name = channel_name
+            self._ctrl = ctrl
+
+        @property
+        def raw(self):
+            """AD5933 channel raw value."""
+            return self._get_iio_attr(self.name, "raw", False, self._ctrl)
+
+    class _temp_channel(_channel):
+        """AD5933 temperature channel with scale."""
+
+        @property
+        def scale(self):
+            """AD5933 temperature channel scale (degC/LSB)."""
+            return self._get_iio_attr(self.name, "scale", False, self._ctrl)
+
+        @property
+        def processed(self):
+            """AD5933 temperature in degrees Celsius."""
+            return self.raw * self.scale
