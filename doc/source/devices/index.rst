@@ -100,6 +100,8 @@ Supported Devices
    adi.adl5240
    adi.adl5960
    adi.adl8113
+   adi.admt4000
+   adi.admt4000ard1z
    adi.admv8818
    adi.adpd1080
    adi.adpd188
@@ -151,6 +153,7 @@ Supported Devices
    adi.max31855
    adi.max31865
    adi.max9611
+   adi.tmc5240
 
    adi.one_bit_adc_dac
    adi.tdd
