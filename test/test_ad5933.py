@@ -36,16 +36,6 @@ def test_ad5933_attr_readonly_channel(
 #########################################
 @pytest.mark.iio_hardware(hardware)
 @pytest.mark.parametrize("classname", [(classname)])
-@pytest.mark.parametrize("attr", [("sweep_done")])
-def test_ad5933_attr_readonly(
-    test_attribute_single_value_readonly, iio_uri, classname, attr
-):
-    test_attribute_single_value_readonly(iio_uri, classname, attr, 1)
-
-
-#########################################
-@pytest.mark.iio_hardware(hardware)
-@pytest.mark.parametrize("classname", [(classname)])
 @pytest.mark.parametrize(
     "attr, start, stop, step, tol, repeats",
     [
@@ -55,8 +45,7 @@ def test_ad5933_attr_readonly(
         ("frequency_increment", 1, 1000, 1, 0, 3),
         ("frequency_points", 1, 511, 1, 0, 3),
         ("settling_cycles", 0, 511, 1, 0, 3),
-        ("settling_multiplier", 0, 1, 1, 0, 2),
-        ("sweep_start", 0, 1, 1, 0, 2),
+        ("settling_cycles_multiplier", 0, 1, 1, 0, 2),
     ],
 )
 def test_ad5933_attr(

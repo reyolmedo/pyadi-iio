@@ -2,7 +2,7 @@
 #
 # SPDX short identifier: ADIBSD
 import argparse
-import cmath
+import math
 
 from adi.ad5933 import ad5933
 
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     dev.frequency_increment = 100
     dev.frequency_points = 50
     dev.settling_cycles = 50
-    dev.settling_multiplier = 0  # 0 = x1, 1 = x2, 3 = x4
+    dev.settling_cycles_multiplier = 0  # 0 = x1, 1 = x2, 3 = x4
 
     print("AD5933 configuration")
     print("  Start frequency:     " + str(dev.start_frequency) + " Hz")
@@ -52,7 +52,8 @@ if __name__ == "__main__":
     dev.rx_enabled_channels = [0, 1]
     dev.rx_buffer_size = dev.frequency_points + 1
 
-    dev.sweep_start = 1  # Trigger the sweep.
+    dev.sweep_initialized = 1  # Load start frequency and settle.
+    dev.sweep_started = 1  # Begin the frequency sweep.
     real, imaginary = dev.rx()
 
     print()
@@ -61,8 +62,8 @@ if __name__ == "__main__":
     increment = dev.frequency_increment
     for i, (re, im) in enumerate(zip(real, imaginary)):
         freq = start + i * increment
-        magnitude = cmath.sqrt(re * re + im * im).real
-        phase_deg = cmath.phase(complex(re, im)) * 180.0 / cmath.pi
+        magnitude = math.hypot(float(re), float(im))
+        phase_deg = math.degrees(math.atan2(float(im), float(re)))
         line = (
             "  f=" + str(freq) + " Hz  real=" + str(re) + "  imag=" + str(im)
             + "  |M|=" + str(round(magnitude, 2))

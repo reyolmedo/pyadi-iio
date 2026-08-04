@@ -49,10 +49,7 @@ class ad5933(rx_chan_comp):
 
     @property
     def output_range(self):
-        """AD5933 output excitation range.
-
-        0 = 2000 mVpp, 1 = 200 mVpp, 2 = 400 mVpp, 3 = 1000 mVpp.
-        """
+        """AD5933 output excitation range."""
         return self._get_iio_dev_attr("output_range", self._ctrl)
 
     @output_range.setter
@@ -96,28 +93,55 @@ class ad5933(rx_chan_comp):
         self._set_iio_dev_attr("settling_cycles", value, self._ctrl)
 
     @property
-    def settling_multiplier(self):
+    def settling_cycles_multiplier(self):
         """AD5933 settling cycles multiplier (0 = x1, 1 = x2, 3 = x4)."""
-        return self._get_iio_dev_attr("settling_multiplier", self._ctrl)
+        return self._get_iio_dev_attr("settling_cycles_multiplier", self._ctrl)
 
-    @settling_multiplier.setter
-    def settling_multiplier(self, value):
-        self._set_iio_dev_attr("settling_multiplier", value, self._ctrl)
-
-    @property
-    def sweep_start(self):
-        """AD5933 sweep trigger. Write 1 to start a sweep; reading reports the
-        current sweep point index."""
-        return self._get_iio_dev_attr("sweep_start", self._ctrl)
-
-    @sweep_start.setter
-    def sweep_start(self, value):
-        self._set_iio_dev_attr("sweep_start", value, self._ctrl)
+    @settling_cycles_multiplier.setter
+    def settling_cycles_multiplier(self, value):
+        self._set_iio_dev_attr("settling_cycles_multiplier", value, self._ctrl)
 
     @property
-    def sweep_done(self):
-        """AD5933 sweep completion status (read-only)."""
-        return self._get_iio_dev_attr("sweep_done", self._ctrl)
+    def settling_cycles_multiplier_available(self):
+        """AD5933 available settling cycles multipliers (read-only)."""
+        return self._get_iio_dev_attr(
+            "settling_cycles_multiplier_available", self._ctrl
+        )
+
+    @property
+    def output_range_available(self):
+        """AD5933 available output excitation range codes (read-only)."""
+        return self._get_iio_dev_attr("output_range_available", self._ctrl)
+
+    @property
+    def pga_gain_available(self):
+        """AD5933 available PGA gain codes (read-only)."""
+        return self._get_iio_dev_attr("pga_gain_available", self._ctrl)
+
+    @property
+    def sweep_initialized(self):
+        """AD5933 sweep initialization status/trigger. Write 1 to initialize a
+        sweep with the current start frequency and increment settings."""
+        return self._get_iio_dev_attr("sweep_initialized", self._ctrl)
+
+    @sweep_initialized.setter
+    def sweep_initialized(self, value):
+        self._set_iio_dev_attr("sweep_initialized", value, self._ctrl)
+
+    @property
+    def sweep_started(self):
+        """AD5933 sweep start trigger/status. Write 1 to start the frequency
+        sweep; reads back the current sweep state."""
+        return self._get_iio_dev_attr("sweep_started", self._ctrl)
+
+    @sweep_started.setter
+    def sweep_started(self, value):
+        self._set_iio_dev_attr("sweep_started", value, self._ctrl)
+
+    @property
+    def heartbeat(self):
+        """AD5933 firmware heartbeat counter (read-only)."""
+        return self._get_iio_dev_attr("heartbeat", self._ctrl)
 
     class _channel(attribute):
         """AD5933 raw channel (real / imaginary)."""
