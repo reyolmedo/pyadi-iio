@@ -143,6 +143,45 @@ class ad5933(rx_chan_comp):
         """AD5933 firmware heartbeat counter (read-only)."""
         return self._get_iio_dev_attr("heartbeat", self._ctrl)
 
+    @property
+    def measure_mode(self):
+        """AD5933 measurement mode (0 = single, 1 = sweep)."""
+        return self._get_iio_dev_attr_str("measure_mode", self._ctrl)
+
+    @measure_mode.setter
+    def measure_mode(self, value):
+        self._set_iio_dev_attr("measure_mode", value, self._ctrl)
+
+    @property
+    def measure_mode_available(self):
+        """AD5933 available measurement modes (read-only)."""
+        return self._get_iio_dev_attr("measure_mode_available", self._ctrl)
+
+    @property
+    def current_output_frequency(self):
+        """AD5933 current excitation output frequency in Hz (read-only)."""
+        return self._get_iio_dev_attr("current_output_frequency", self._ctrl)
+
+    @property
+    def repeat_measurement(self):
+        """AD5933 repeat-measurement frequency in Hz. Write to repeat a
+        measurement at the same frequency; reads back the last value."""
+        return self._get_iio_dev_attr("repeat_measurement", self._ctrl)
+
+    @repeat_measurement.setter
+    def repeat_measurement(self, value):
+        self._set_iio_dev_attr("repeat_measurement", value, self._ctrl)
+
+    @property
+    def incremented_measurement(self):
+        """AD5933 incremented-measurement frequency in Hz. Write to advance to
+        the next sweep point and measure; reads back the last value."""
+        return self._get_iio_dev_attr("incremented_measurement", self._ctrl)
+
+    @incremented_measurement.setter
+    def incremented_measurement(self, value):
+        self._set_iio_dev_attr("incremented_measurement", value, self._ctrl)
+
     class _channel(attribute):
         """AD5933 raw channel (real / imaginary)."""
 
