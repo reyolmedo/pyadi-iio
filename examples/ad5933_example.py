@@ -19,8 +19,15 @@ if __name__ == "__main__":
         "--gain-factor",
         type=float,
         default=None,
-        help="Calibration gain factor from a known reference impedance."
-        " If given, |Z| is reported in ohms.",
+        help="Precomputed calibration gain factor. If given, calibration is"
+        " skipped and |Z| is reported in ohms.",
+    )
+    parser.add_argument(
+        "--calibration-impedance",
+        type=float,
+        default=None,
+        help="Known reference impedance in ohms connected during calibration."
+        " Used to measure the gain factor before the sweep.",
     )
     args = parser.parse_args()
 
@@ -32,10 +39,10 @@ if __name__ == "__main__":
     dev.output_range = 0  # 0 = 2000 mVpp, 1 = 200 mVpp, 2 = 400 mVpp, 3 = 1000 mVpp
     dev.pga_gain = 1  # 0 = x5, 1 = x1
     dev.start_frequency = 30000
-    dev.frequency_increment = 100
-    dev.frequency_points = 50
+    dev.frequency_increment = 500
+    dev.frequency_points = 10
     dev.settling_cycles = 50
-    dev.measure_mode = 1  # 0 = single, 1 = sweep
+    dev.measure_mode = 1  # 0 = single, 1 = sweep (buffered rx() requires sweep)
     dev.settling_cycles_multiplier = 0  # 0 = x1, 1 = x2, 3 = x4
 
     print("AD5933 configuration")
@@ -54,50 +61,80 @@ if __name__ == "__main__":
     dev.rx_enabled_channels = [0, 1]
     dev.rx_buffer_size = dev.frequency_points + 1
 
-    dev.sweep_initialized = 1  # Load start frequency and settle.
-    dev.sweep_started = 1  # Begin the frequency sweep.
+    def run_sweep():
+        """Trigger one full frequency sweep and return (real, imaginary) lists."""
+        dev.sweep_initialized = 1  # Load start frequency and settle.
+        dev.sweep_started = 1  # Begin the frequency sweep.
+        return dev.rx()
 
-    if int(dev.measure_mode) == 0:
-        # Single mode: read one impedance point straight from the data registers.
-        single_raw = dev.real.raw
-        single_imaginary = dev.imaginary.raw
-        print()
-        print("Single measurement")
-        print("  Single read (Real):      " + str(round(single_raw, 2)))
-        print("  Single read (Imaginary): " + str(round(single_imaginary, 2)))
-    else:
-        # Sweep mode: capture the full buffered sweep once it completes.
-        while dev.sweep_started:
-            pass
+    def measure_gain_factors(calibration_impedance):
+        """Measure a per-point AD5933 gain factor from a known reference.
 
-        real, imaginary = dev.rx()
-
-        print()
-        print("Sweep results")
-        start = dev.start_frequency
-        increment = dev.frequency_increment
-        for i, (re, im) in enumerate(zip(real, imaginary)):
-            freq = start + i * increment
+        Running a full sweep against a known impedance yields one gain factor
+        per frequency point:
+            GF[i] = 1 / (|M_cal[i]| * Z_cal)
+        so impedance at each point is recovered as Z[i] = 1 / (GF[i] * |M[i]|).
+        Per-point calibration corrects the AD5933 gain variation with frequency
+        (see datasheet Rev. F, "Gain Factor Variation with Frequency", p. 17).
+        """
+        cal_real, cal_imaginary = run_sweep()
+        gfs = []
+        for re, im in zip(cal_real, cal_imaginary):
             magnitude = math.hypot(float(re), float(im))
-            phase_deg = math.degrees(math.atan2(float(im), float(re)))
-            line = (
-                "  f="
-                + str(freq)
-                + " Hz  real="
-                + str(re)
-                + "  imag="
-                + str(im)
-                + "  |M|="
-                + str(round(magnitude, 2))
-                + "  phase="
-                + str(round(phase_deg, 2))
-                + " deg"
-            )
-            if args.gain_factor:
-                impedance = (
-                    1.0 / (args.gain_factor * magnitude) if magnitude else float("inf")
-                )
-                line += "  |Z|=" + str(round(impedance, 2)) + " ohm"
-            print(line)
+            gfs.append(1.0 / (magnitude * calibration_impedance) if magnitude else 0.0)
+        avg = sum(gfs) / len(gfs) if gfs else 0.0
+        print("Measured " + str(len(gfs)) + " per-point gain factors (avg=" + str(avg) + ")")
+        return gfs
+
+    # Determine the gain factor(s) before the sweep. A precomputed scalar takes
+    # priority; otherwise measure a per-point array from a known impedance.
+    gain_factors = None
+    calibrated = False
+    if args.gain_factor is not None:
+        gain_factors = [args.gain_factor]  # Single value applied to every point.
+    elif args.calibration_impedance is not None:
+        print()
+        print("Connect the " + str(args.calibration_impedance) + " ohm reference impedance.")
+        input("Press Enter to start calibration...")
+        gain_factors = measure_gain_factors(args.calibration_impedance)
+        calibrated = True
+
+    # If we just calibrated against a reference, pause so the reference can be
+    # swapped for the device under test before the measurement sweep.
+    if calibrated:
+        print()
+        input("Connect the device under test and press Enter to start the sweep...")
+
+    # Run the measurement sweep on the device under test.
+    real, imaginary = run_sweep()
+
+    print()
+    print("Sweep results")
+    start = dev.start_frequency
+    increment = dev.frequency_increment
+    for i, (re, im) in enumerate(zip(real, imaginary)):
+        freq = start + i * increment
+        mag = math.hypot(float(re), float(im))
+        phase_deg = math.degrees(math.atan2(float(im), float(re)))
+        line = (
+            "  f="
+            + str(freq)
+            + " Hz  real="
+            + str(re)
+            + "  imag="
+            + str(im)
+            + "  |M|="
+            + str(round(mag, 2))
+            + "  phase="
+            + str(round(phase_deg, 2))
+            + " deg"
+        )
+        if gain_factors:
+            # Use the matching per-point gain factor; fall back to the last one
+            # (also covers the single-value/scalar case).
+            gf = gain_factors[i] if i < len(gain_factors) else gain_factors[-1]
+            impedance = 1.0 / (gf * mag) if (gf and mag) else float("inf")
+            line += "  |Z|=" + str(round(impedance, 2)) + " ohm"
+        print(line)
 
     del dev

@@ -21,6 +21,10 @@ class ad5933(rx_chan_comp):
     _rx_data_type = np.int16
     _rx_unbuffered_data = False
     _rx_data_si_type = float
+    # tinyiiod returns the whole sweep in a single submit() (one block, all
+    # points), and its iio_set_buffers_count() rejects any count != 1 with
+    # -EINVAL. Request exactly one block so libiio does not negotiate more.
+    _rx_buffer_num_blocks = 1
 
     def __init__(self, uri="", **kwargs):
         """ad5933 class constructor."""
@@ -45,7 +49,13 @@ class ad5933(rx_chan_comp):
 
     @pga_gain.setter
     def pga_gain(self, value):
-        self._set_iio_dev_attr("pga_gain", value, self._ctrl)
+        if value in self.pga_gain_available:
+            self._set_iio_dev_attr("pga_gain", value, self._ctrl)
+        else:
+            raise ValueError(
+                "Error: Attribute value not supported \nUse one of: "
+                + str(self.pga_gain_available)
+            )
 
     @property
     def output_range(self):
@@ -54,7 +64,13 @@ class ad5933(rx_chan_comp):
 
     @output_range.setter
     def output_range(self, value):
-        self._set_iio_dev_attr("output_range", value, self._ctrl)
+        if value in self.output_range_available:
+            self._set_iio_dev_attr("output_range", value, self._ctrl)
+        else:
+            raise ValueError(
+                "Error: Attribute value not supported \nUse one of: "
+                + str(self.output_range_available)
+            )
 
     @property
     def start_frequency(self):
@@ -99,7 +115,13 @@ class ad5933(rx_chan_comp):
 
     @settling_cycles_multiplier.setter
     def settling_cycles_multiplier(self, value):
-        self._set_iio_dev_attr("settling_cycles_multiplier", value, self._ctrl)
+        if value in self.settling_cycles_multiplier_available:
+            self._set_iio_dev_attr("settling_cycles_multiplier", value, self._ctrl)
+        else:
+            raise ValueError(
+                "Error: Attribute value not supported \nUse one of: "
+                + str(self.settling_cycles_multiplier_available)
+            )
 
     @property
     def settling_cycles_multiplier_available(self):
@@ -139,18 +161,19 @@ class ad5933(rx_chan_comp):
         self._set_iio_dev_attr("sweep_started", value, self._ctrl)
 
     @property
-    def heartbeat(self):
-        """AD5933 firmware heartbeat counter (read-only)."""
-        return self._get_iio_dev_attr("heartbeat", self._ctrl)
-
-    @property
     def measure_mode(self):
         """AD5933 measurement mode (0 = single, 1 = sweep)."""
         return self._get_iio_dev_attr_str("measure_mode", self._ctrl)
 
     @measure_mode.setter
     def measure_mode(self, value):
-        self._set_iio_dev_attr("measure_mode", value, self._ctrl)
+        if value in self.measure_mode_available:
+            self._set_iio_dev_attr("measure_mode", value, self._ctrl)
+        else:
+            raise ValueError(
+                "Error: Attribute value not supported \nUse one of: "
+                + str(self.measure_mode_available)
+            )
 
     @property
     def measure_mode_available(self):
