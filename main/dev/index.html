@@ -8,7 +8,7 @@
 
     <title>Developers &#8212; Analog Devices Hardware Python Interfaces 0.0.22 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
-    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=d3f78147" />
+    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=fb8972a4" />
     <link rel="stylesheet" type="text/css" href="../_static/css/style.css?v=632a43e7" />
     <script async="async" src="../_static/app.umd.js?v=26d0298f"></script>
     <link rel="icon" href="../_static/favicon.png"/>
@@ -67,10 +67,10 @@
     </div>
     <div id="right">
       <span>
-        <a id="logo-org" href="https://analog.com" aria-label="Analog Devices Inc. landing page"></a>
+        <a id="logo-org" href="https://developer.analog.com/" aria-label="Analog Devices Inc. landing page"></a>
         <div class="vertical-divider"></div>
         
-        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Docs</label>
+        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Documentation</label>
         
         <a id="logo" href="../index.html">
           <div>pyadi-iio</div>
@@ -308,6 +308,7 @@ Content on this topic
 <li class="toctree-l2"><a class="reference internal" href="../devices/adi.one_bit_adc_dac.html">one_bit_adc_dac</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../devices/adi.tdd.html">tdd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../devices/adi.tddn.html">tddn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devices/adi.trigger.html">Triggers</a></li>
 </ul>
 </li>
 </ul>
@@ -485,9 +486,9 @@ initialization pattern. See:</p>
 </pre></div>
 </div>
 <p>Add to your path and shell startup script (.bashrc, .zshrc, …)</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/home/&lt;username&gt;/.pyenv/bin:</span><span class="nv">$PATH</span>
-<span class="s2">eval &quot;</span><span class="k">$(</span>pyenv<span class="w"> </span>init<span class="w"> </span>-<span class="k">)</span><span class="s2">&quot;</span>
-<span class="s2">eval &quot;</span><span class="k">$(</span>pyenv<span class="w"> </span>virtualenv-init<span class="w"> </span>-<span class="k">)</span><span class="s2">&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/home/&lt;username&gt;/.pyenv/bin:</span><span class="nv">$PATH</span>
+<span class="s2">eval "</span><span class="k">$(</span>pyenv<span class="w"> </span>init<span class="w"> </span>-<span class="k">)</span><span class="s2">"</span>
+<span class="s2">eval "</span><span class="k">$(</span>pyenv<span class="w"> </span>virtualenv-init<span class="w"> </span>-<span class="k">)</span><span class="s2">"</span>
 </pre></div>
 </div>
 <p>Install the desired python version</p>
@@ -523,7 +524,7 @@ pipenv<span class="w"> </span>shell
 <span class="kn">import</span><span class="w"> </span><span class="nn">iio</span>
 
 
-<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">iio_hardware</span><span class="p">(</span><span class="s2">&quot;pluto&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>  <span class="c1"># Set True disables test during emulation</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">iio_hardware</span><span class="p">(</span><span class="s2">"pluto"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>  <span class="c1"># Set True disables test during emulation</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">test_libiio_device</span><span class="p">(</span><span class="n">iio_uri</span><span class="p">):</span>
     <span class="n">ctx</span> <span class="o">=</span> <span class="n">iio</span><span class="o">.</span><span class="n">Context</span><span class="p">(</span><span class="n">iio_uri</span><span class="p">)</span>
     <span class="o">...</span>

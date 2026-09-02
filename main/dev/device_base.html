@@ -8,7 +8,7 @@
 
     <title>Device Base Classes &#8212; Analog Devices Hardware Python Interfaces 0.0.22 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
-    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=d3f78147" />
+    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=fb8972a4" />
     <link rel="stylesheet" type="text/css" href="../_static/css/style.css?v=632a43e7" />
     <script async="async" src="../_static/app.umd.js?v=26d0298f"></script>
     <link rel="icon" href="../_static/favicon.png"/>
@@ -67,10 +67,10 @@
     </div>
     <div id="right">
       <span>
-        <a id="logo-org" href="https://analog.com" aria-label="Analog Devices Inc. landing page"></a>
+        <a id="logo-org" href="https://developer.analog.com/" aria-label="Analog Devices Inc. landing page"></a>
         <div class="vertical-divider"></div>
         
-        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Docs</label>
+        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Documentation</label>
         
         <a id="logo" href="../index.html">
           <div>pyadi-iio</div>
@@ -298,6 +298,7 @@ Content on this topic
 <li class="toctree-l2"><a class="reference internal" href="../devices/adi.one_bit_adc_dac.html">one_bit_adc_dac</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../devices/adi.tdd.html">tdd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../devices/adi.tddn.html">tddn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devices/adi.trigger.html">Triggers</a></li>
 </ul>
 </li>
 </ul>
@@ -370,7 +371,7 @@ channel id, and appended to <code class="docutils literal notranslate"><span cla
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">ad4080_channel</span><span class="p">(</span><span class="n">attribute</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;AD4080 channel&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""AD4080 channel"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctrl</span><span class="p">,</span> <span class="n">channel_name</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">channel_name</span>
@@ -378,19 +379,19 @@ channel id, and appended to <code class="docutils literal notranslate"><span cla
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_iio_attr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_iio_attr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">"scale"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">ad4080</span><span class="p">(</span><span class="n">rx_chan_comp</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;AD4080 ADC&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""AD4080 ADC"""</span>
 
-    <span class="n">compatible_parts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ad4080&quot;</span><span class="p">,</span> <span class="s2">&quot;ad4081&quot;</span><span class="p">,</span> <span class="s2">&quot;ad4083&quot;</span><span class="p">]</span>
+    <span class="n">compatible_parts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"ad4080"</span><span class="p">,</span> <span class="s2">"ad4081"</span><span class="p">,</span> <span class="s2">"ad4083"</span><span class="p">]</span>
     <span class="n">_complex_data</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">_channel_def</span> <span class="o">=</span> <span class="n">ad4080_channel</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">sampling_frequency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_iio_dev_attr</span><span class="p">(</span><span class="s2">&quot;sampling_frequency&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_iio_dev_attr</span><span class="p">(</span><span class="s2">"sampling_frequency"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>No custom <code class="docutils literal notranslate"><span class="pre">__init__</span></code> is required; <code class="docutils literal notranslate"><span class="pre">rx_chan_comp.__init__</span></code> handles URI
@@ -401,8 +402,8 @@ properties are added as normal.</p>
 <h2>Supporting Multiple Devices With the Same Name<a class="headerlink" href="#supporting-multiple-devices-with-the-same-name" title="Link to this heading"></a></h2>
 <p>When a context exposes multiple IIO devices that share a name, pass
 <code class="docutils literal notranslate"><span class="pre">device_index</span></code> when constructing the class to select which one to bind to:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dev0</span> <span class="o">=</span> <span class="n">ad4080</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="s2">&quot;ip:analog.local&quot;</span><span class="p">,</span> <span class="n">device_index</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">dev1</span> <span class="o">=</span> <span class="n">ad4080</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="s2">&quot;ip:analog.local&quot;</span><span class="p">,</span> <span class="n">device_index</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dev0</span> <span class="o">=</span> <span class="n">ad4080</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="s2">"ip:analog.local"</span><span class="p">,</span> <span class="n">device_index</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">dev1</span> <span class="o">=</span> <span class="n">ad4080</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="s2">"ip:analog.local"</span><span class="p">,</span> <span class="n">device_index</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>

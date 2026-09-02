@@ -8,7 +8,7 @@
 
     <title>MCP Server &#8212; Analog Devices Hardware Python Interfaces 0.0.22 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
-    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=d3f78147" />
+    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=fb8972a4" />
     <link rel="stylesheet" type="text/css" href="../_static/css/style.css?v=632a43e7" />
     <script async="async" src="../_static/app.umd.js?v=26d0298f"></script>
     <link rel="icon" href="../_static/favicon.png"/>
@@ -67,10 +67,10 @@
     </div>
     <div id="right">
       <span>
-        <a id="logo-org" href="https://analog.com" aria-label="Analog Devices Inc. landing page"></a>
+        <a id="logo-org" href="https://developer.analog.com/" aria-label="Analog Devices Inc. landing page"></a>
         <div class="vertical-divider"></div>
         
-        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Docs</label>
+        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Documentation</label>
         
         <a id="logo" href="../index.html">
           <div>pyadi-iio</div>
@@ -316,6 +316,7 @@ Content on this topic
 <li class="toctree-l2"><a class="reference internal" href="../devices/adi.one_bit_adc_dac.html">one_bit_adc_dac</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../devices/adi.tdd.html">tdd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../devices/adi.tddn.html">tddn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devices/adi.trigger.html">Triggers</a></li>
 </ul>
 </li>
 </ul>
@@ -356,9 +357,9 @@ Content on this topic
 </div>
 <p>The server communicates over stdio using the MCP protocol. To use it with an MCP client, configure the client to launch the server as a subprocess. For example, in a Claude Desktop <code class="docutils literal notranslate"><span class="pre">claude_desktop_config.json</span></code>:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;pyadi-iio&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pyadi-iio-mcp&quot;</span>
+<span class="w">  </span><span class="nt">"mcpServers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"pyadi-iio"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pyadi-iio-mcp"</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
@@ -372,8 +373,8 @@ Content on this topic
 <h3>Device Discovery<a class="headerlink" href="#device-discovery" title="Link to this heading"></a></h3>
 <p><strong>list_device_classes</strong> – List all available pyadi-iio device classes with an optional name filter. This is useful for finding the correct class name for a specific part.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example tool call</span>
-<span class="n">list_device_classes</span><span class="p">(</span><span class="n">filter_text</span><span class="o">=</span><span class="s2">&quot;936&quot;</span><span class="p">)</span>
-<span class="c1"># Returns: [&quot;ad9361&quot;, &quot;ad9363&quot;, &quot;ad9364&quot;]</span>
+<span class="n">list_device_classes</span><span class="p">(</span><span class="n">filter_text</span><span class="o">=</span><span class="s2">"936"</span><span class="p">)</span>
+<span class="c1"># Returns: ["ad9361", "ad9363", "ad9364"]</span>
 </pre></div>
 </div>
 </section>
@@ -381,13 +382,13 @@ Content on this topic
 <h3>Connection Management<a class="headerlink" href="#connection-management" title="Link to this heading"></a></h3>
 <p><strong>connect_device</strong> – Create a connection to any pyadi-iio device by class name and URI. Returns a <code class="docutils literal notranslate"><span class="pre">connection_id</span></code> UUID used by all subsequent tools, along with a summary of device capabilities.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Connect to an AD9361-based device</span>
-<span class="n">connect_device</span><span class="p">(</span><span class="n">device_class</span><span class="o">=</span><span class="s2">&quot;ad9361&quot;</span><span class="p">,</span> <span class="n">uri</span><span class="o">=</span><span class="s2">&quot;ip:192.168.2.1&quot;</span><span class="p">)</span>
+<span class="n">connect_device</span><span class="p">(</span><span class="n">device_class</span><span class="o">=</span><span class="s2">"ad9361"</span><span class="p">,</span> <span class="n">uri</span><span class="o">=</span><span class="s2">"ip:192.168.2.1"</span><span class="p">)</span>
 
 <span class="c1"># Connect with extra constructor arguments</span>
 <span class="n">connect_device</span><span class="p">(</span>
-    <span class="n">device_class</span><span class="o">=</span><span class="s2">&quot;ad9084&quot;</span><span class="p">,</span>
-    <span class="n">uri</span><span class="o">=</span><span class="s2">&quot;ip:192.168.2.1&quot;</span><span class="p">,</span>
-    <span class="n">kwargs</span><span class="o">=</span><span class="s1">&#39;{&quot;rx1_device_name&quot;: &quot;axi-ad9084-rx-hpc&quot;}&#39;</span><span class="p">,</span>
+    <span class="n">device_class</span><span class="o">=</span><span class="s2">"ad9084"</span><span class="p">,</span>
+    <span class="n">uri</span><span class="o">=</span><span class="s2">"ip:192.168.2.1"</span><span class="p">,</span>
+    <span class="n">kwargs</span><span class="o">=</span><span class="s1">'{"rx1_device_name": "axi-ad9084-rx-hpc"}'</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -396,26 +397,26 @@ Content on this topic
 <section id="device-introspection">
 <h3>Device Introspection<a class="headerlink" href="#device-introspection" title="Link to this heading"></a></h3>
 <p><strong>discover_device_capabilities</strong> – Inspect a connected device to learn what it supports. Returns whether the device has RX, TX, and DDS capabilities, along with a list of all available properties including read/write metadata and documentation. An optional filter narrows the property list.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># See all properties related to &quot;nco&quot;</span>
-<span class="n">discover_device_capabilities</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">filter_text</span><span class="o">=</span><span class="s2">&quot;nco&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># See all properties related to "nco"</span>
+<span class="n">discover_device_capabilities</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="s2">"..."</span><span class="p">,</span> <span class="n">filter_text</span><span class="o">=</span><span class="s2">"nco"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="property-access">
 <h3>Property Access<a class="headerlink" href="#property-access" title="Link to this heading"></a></h3>
 <p><strong>get_property</strong> – Read any device property by name. Works with any property exposed by the device class, from sample rates to NCO frequencies to gain settings.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">get_property</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">property_name</span><span class="o">=</span><span class="s2">&quot;rx_sample_rate&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">get_property</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="s2">"..."</span><span class="p">,</span> <span class="n">property_name</span><span class="o">=</span><span class="s2">"rx_sample_rate"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>set_property</strong> – Write any writable device property. The value is passed as a JSON-encoded string to support all types (integers, floats, lists, strings).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set a scalar value</span>
-<span class="n">set_property</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">property_name</span><span class="o">=</span><span class="s2">&quot;rx_lo&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;2400000000&quot;</span><span class="p">)</span>
+<span class="n">set_property</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="s2">"..."</span><span class="p">,</span> <span class="n">property_name</span><span class="o">=</span><span class="s2">"rx_lo"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">"2400000000"</span><span class="p">)</span>
 
 <span class="c1"># Set a list value</span>
 <span class="n">set_property</span><span class="p">(</span>
-    <span class="n">connection_id</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
-    <span class="n">property_name</span><span class="o">=</span><span class="s2">&quot;rx_channel_nco_frequencies&quot;</span><span class="p">,</span>
-    <span class="n">value</span><span class="o">=</span><span class="s2">&quot;[100000000, 200000000]&quot;</span><span class="p">,</span>
+    <span class="n">connection_id</span><span class="o">=</span><span class="s2">"..."</span><span class="p">,</span>
+    <span class="n">property_name</span><span class="o">=</span><span class="s2">"rx_channel_nco_frequencies"</span><span class="p">,</span>
+    <span class="n">value</span><span class="o">=</span><span class="s2">"[100000000, 200000000]"</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -424,10 +425,10 @@ Content on this topic
 <h3>Data Capture<a class="headerlink" href="#data-capture" title="Link to this heading"></a></h3>
 <p><strong>capture_rx_data</strong> – Capture receive data and save it to a <code class="docutils literal notranslate"><span class="pre">.npy</span></code> file for analysis. Supports configurable buffer sizes and channel selection.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">capture_rx_data</span><span class="p">(</span>
-    <span class="n">connection_id</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
-    <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;/tmp/capture.npy&quot;</span><span class="p">,</span>
+    <span class="n">connection_id</span><span class="o">=</span><span class="s2">"..."</span><span class="p">,</span>
+    <span class="n">output_path</span><span class="o">=</span><span class="s2">"/tmp/capture.npy"</span><span class="p">,</span>
     <span class="n">buffer_size</span><span class="o">=</span><span class="mi">65536</span><span class="p">,</span>
-    <span class="n">enabled_channels</span><span class="o">=</span><span class="s2">&quot;[0, 1]&quot;</span><span class="p">,</span>
+    <span class="n">enabled_channels</span><span class="o">=</span><span class="s2">"[0, 1]"</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -436,7 +437,7 @@ Content on this topic
 <h3>Signal Generation<a class="headerlink" href="#signal-generation" title="Link to this heading"></a></h3>
 <p><strong>configure_dds</strong> – Configure the FPGA-side DDS to generate a single tone on a specified TX channel. Useful for loopback testing and spectral analysis.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">configure_dds</span><span class="p">(</span>
-    <span class="n">connection_id</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="mi">10000000</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">connection_id</span><span class="o">=</span><span class="s2">"..."</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="mi">10000000</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -455,22 +456,22 @@ Content on this topic
 <li><p><strong>Disconnect</strong> when done with <code class="docutils literal notranslate"><span class="pre">disconnect_device</span></code></p></li>
 </ol>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Find the right device class</span>
-<span class="n">list_device_classes</span><span class="p">(</span><span class="n">filter_text</span><span class="o">=</span><span class="s2">&quot;pluto&quot;</span><span class="p">)</span>
-<span class="c1"># -&gt; [&quot;Pluto&quot;]</span>
+<span class="n">list_device_classes</span><span class="p">(</span><span class="n">filter_text</span><span class="o">=</span><span class="s2">"pluto"</span><span class="p">)</span>
+<span class="c1"># -&gt; ["Pluto"]</span>
 
 <span class="c1"># 2. Connect</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">connect_device</span><span class="p">(</span><span class="n">device_class</span><span class="o">=</span><span class="s2">&quot;Pluto&quot;</span><span class="p">,</span> <span class="n">uri</span><span class="o">=</span><span class="s2">&quot;ip:192.168.2.1&quot;</span><span class="p">)</span>
-<span class="n">conn_id</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;connection_id&quot;</span><span class="p">]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">connect_device</span><span class="p">(</span><span class="n">device_class</span><span class="o">=</span><span class="s2">"Pluto"</span><span class="p">,</span> <span class="n">uri</span><span class="o">=</span><span class="s2">"ip:192.168.2.1"</span><span class="p">)</span>
+<span class="n">conn_id</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">"connection_id"</span><span class="p">]</span>
 
 <span class="c1"># 3. Explore what the device can do</span>
-<span class="n">discover_device_capabilities</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="n">conn_id</span><span class="p">,</span> <span class="n">filter_text</span><span class="o">=</span><span class="s2">&quot;lo&quot;</span><span class="p">)</span>
+<span class="n">discover_device_capabilities</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="n">conn_id</span><span class="p">,</span> <span class="n">filter_text</span><span class="o">=</span><span class="s2">"lo"</span><span class="p">)</span>
 
 <span class="c1"># 4. Configure</span>
-<span class="n">set_property</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="n">conn_id</span><span class="p">,</span> <span class="n">property_name</span><span class="o">=</span><span class="s2">&quot;rx_lo&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;2400000000&quot;</span><span class="p">)</span>
-<span class="n">set_property</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="n">conn_id</span><span class="p">,</span> <span class="n">property_name</span><span class="o">=</span><span class="s2">&quot;sample_rate&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;2084000&quot;</span><span class="p">)</span>
+<span class="n">set_property</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="n">conn_id</span><span class="p">,</span> <span class="n">property_name</span><span class="o">=</span><span class="s2">"rx_lo"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">"2400000000"</span><span class="p">)</span>
+<span class="n">set_property</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="n">conn_id</span><span class="p">,</span> <span class="n">property_name</span><span class="o">=</span><span class="s2">"sample_rate"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">"2084000"</span><span class="p">)</span>
 
 <span class="c1"># 5. Capture data</span>
-<span class="n">capture_rx_data</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="n">conn_id</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;/tmp/data.npy&quot;</span><span class="p">)</span>
+<span class="n">capture_rx_data</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="n">conn_id</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="s2">"/tmp/data.npy"</span><span class="p">)</span>
 
 <span class="c1"># 6. Disconnect</span>
 <span class="n">disconnect_device</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="n">conn_id</span><span class="p">)</span>

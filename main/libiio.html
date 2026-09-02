@@ -8,7 +8,7 @@
 
     <title>libiio Direct Access &#8212; Analog Devices Hardware Python Interfaces 0.0.22 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8e8a900e" />
-    <link rel="stylesheet" type="text/css" href="_static/app.min.css?v=d3f78147" />
+    <link rel="stylesheet" type="text/css" href="_static/app.min.css?v=fb8972a4" />
     <link rel="stylesheet" type="text/css" href="_static/css/style.css?v=632a43e7" />
     <script async="async" src="_static/app.umd.js?v=26d0298f"></script>
     <link rel="icon" href="_static/favicon.png"/>
@@ -67,10 +67,10 @@
     </div>
     <div id="right">
       <span>
-        <a id="logo-org" href="https://analog.com" aria-label="Analog Devices Inc. landing page"></a>
+        <a id="logo-org" href="https://developer.analog.com/" aria-label="Analog Devices Inc. landing page"></a>
         <div class="vertical-divider"></div>
         
-        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Docs</label>
+        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Documentation</label>
         
         <a id="logo" href="index.html">
           <div>pyadi-iio</div>
@@ -296,6 +296,7 @@ Content on this topic
 <li class="toctree-l2"><a class="reference internal" href="devices/adi.one_bit_adc_dac.html">one_bit_adc_dac</a></li>
 <li class="toctree-l2"><a class="reference internal" href="devices/adi.tdd.html">tdd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="devices/adi.tddn.html">tddn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devices/adi.trigger.html">Triggers</a></li>
 </ul>
 </li>
 </ul>
@@ -322,11 +323,11 @@ Content on this topic
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">adi</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">iio</span>
 
-<span class="n">sdr</span> <span class="o">=</span> <span class="n">adi</span><span class="o">.</span><span class="n">Pluto</span><span class="p">(</span><span class="s2">&quot;ip:pluto.local&quot;</span><span class="p">)</span>
-<span class="n">ctx</span> <span class="o">=</span> <span class="n">iio</span><span class="o">.</span><span class="n">Context</span><span class="p">(</span><span class="s2">&quot;ip:pluto.local&quot;</span><span class="p">)</span>
+<span class="n">sdr</span> <span class="o">=</span> <span class="n">adi</span><span class="o">.</span><span class="n">Pluto</span><span class="p">(</span><span class="s2">"ip:pluto.local"</span><span class="p">)</span>
+<span class="n">ctx</span> <span class="o">=</span> <span class="n">iio</span><span class="o">.</span><span class="n">Context</span><span class="p">(</span><span class="s2">"ip:pluto.local"</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sdr</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">devices</span><span class="p">,</span> <span class="n">ctx</span><span class="o">.</span><span class="n">devices</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">d1</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="n">d2</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">d1</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">"|"</span><span class="p">,</span> <span class="n">d2</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Output:</p>
@@ -346,15 +347,15 @@ cf-ad9361-lpc<span class="w"> </span><span class="p">|</span><span class="w"> </
 
 <span class="n">sdr</span> <span class="o">=</span> <span class="n">adi</span><span class="o">.</span><span class="n">Pluto</span><span class="p">()</span>
 
-<span class="n">phy</span> <span class="o">=</span> <span class="n">sdr</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">find_device</span><span class="p">(</span><span class="s2">&quot;ad9361-phy&quot;</span><span class="p">)</span>
+<span class="n">phy</span> <span class="o">=</span> <span class="n">sdr</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">find_device</span><span class="p">(</span><span class="s2">"ad9361-phy"</span><span class="p">)</span>
 <span class="c1"># View current mode</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">phy</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;ensm_mode&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">phy</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"ensm_mode"</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="c1"># View options</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">phy</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;ensm_mode_available&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">phy</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"ensm_mode_available"</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="c1"># Update mode</span>
-<span class="n">phy</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;ensm_mode&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;alert&quot;</span>
+<span class="n">phy</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"ensm_mode"</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">"alert"</span>
 <span class="c1"># View new mode</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">phy</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;ensm_mode&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">phy</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"ensm_mode"</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Output:</p>
@@ -368,7 +369,7 @@ alert
 
 <span class="n">sdr</span> <span class="o">=</span> <span class="n">adi</span><span class="o">.</span><span class="n">Pluto</span><span class="p">()</span>
 
-<span class="n">phy</span> <span class="o">=</span> <span class="n">sdr</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">find_device</span><span class="p">(</span><span class="s2">&quot;ad9361-phy&quot;</span><span class="p">)</span>
+<span class="n">phy</span> <span class="o">=</span> <span class="n">sdr</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">find_device</span><span class="p">(</span><span class="s2">"ad9361-phy"</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">dattr</span> <span class="ow">in</span> <span class="n">phy</span><span class="o">.</span><span class="n">debug_attrs</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">dattr</span><span class="p">,</span> <span class="n">phy</span><span class="o">.</span><span class="n">debug_attrs</span><span class="p">[</span><span class="n">dattr</span><span class="p">])</span>
 </pre></div>
@@ -399,12 +400,12 @@ adi,txmon-1-front-end-gain<span class="w"> </span>adi,txmon-1-front-end-gain
 
 <span class="n">sdr</span> <span class="o">=</span> <span class="n">adi</span><span class="o">.</span><span class="n">Pluto</span><span class="p">()</span>
 
-<span class="n">phy</span> <span class="o">=</span> <span class="n">sdr</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">find_device</span><span class="p">(</span><span class="s2">&quot;ad9361-phy&quot;</span><span class="p">)</span>
+<span class="n">phy</span> <span class="o">=</span> <span class="n">sdr</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">find_device</span><span class="p">(</span><span class="s2">"ad9361-phy"</span><span class="p">)</span>
 <span class="c1"># Read product ID register</span>
 <span class="n">pi</span> <span class="o">=</span> <span class="n">phy</span><span class="o">.</span><span class="n">reg_read</span><span class="p">(</span><span class="mh">0x37</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ID: </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"ID: </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="c1"># Enable near-end loopback in the HDL core</span>
-<span class="n">rxfpga</span> <span class="o">=</span> <span class="n">sdr</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">find_device</span><span class="p">(</span><span class="s2">&quot;cf-ad9361-lpc&quot;</span><span class="p">)</span>
+<span class="n">rxfpga</span> <span class="o">=</span> <span class="n">sdr</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">find_device</span><span class="p">(</span><span class="s2">"cf-ad9361-lpc"</span><span class="p">)</span>
 <span class="n">rxfpga</span><span class="o">.</span><span class="n">reg_write</span><span class="p">(</span><span class="mh">0x80000418</span><span class="p">,</span> <span class="mh">0x1</span><span class="p">)</span>  <span class="c1"># I channel</span>
 <span class="n">rxfpga</span><span class="o">.</span><span class="n">reg_write</span><span class="p">(</span><span class="mh">0x80000458</span><span class="p">,</span> <span class="mh">0x1</span><span class="p">)</span>  <span class="c1"># Q channel</span>
 </pre></div>
